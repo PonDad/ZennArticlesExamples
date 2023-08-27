@@ -82,6 +82,16 @@ def bot_listen_hear():
         return response 
 
 if __name__ == "__main__":
-    while True:
-        response = bot_listen_hear()
-        print("response: ",response)
+    try:
+        while True:
+            user_input = bot_listen_hear()
+            print("😀 USER: ",user_input)
+            if user_input == "":
+                continue
+            else:
+                pass
+
+            robot_reply = "回答テストです"
+            print("🤖 GPT: ", robot_reply)
+    except KeyboardInterrupt:
+        print("🖥️ SYSTEM: プログラムを終了します")
