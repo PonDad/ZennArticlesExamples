@@ -6,22 +6,22 @@ aquestalkpiを使用して合成音声を出力する音声合成プログラム
 speak()関数とspeak_popen()関数により、同期、非同期の音声再生を提供します。
 '''
 
-import subprocess
+import subprocess # ---(※1)
 from pathlib import Path
 
-# 音声合成して再生（再生が完了するまで待機）
+# 音声合成して再生（再生が完了するまで待機）---(※2)
 def speak(text, num):
     AquesTalkPi = str(Path("aquestalkpi/AquesTalkPi").resolve())
     speak_cmd = "echo " + text + " | " + AquesTalkPi + " -b -v f" + str(num) + " -f - | aplay"
     subprocess.run(speak_cmd,shell=True)
 
-# 音声合成して再生（非同期再生）
+# 音声合成して再生（非同期再生）---(※3)
 def speak_popen(text, num):
     AquesTalkPi = str(Path("aquestalkpi/AquesTalkPi").resolve())
     speak_p_cmd = "echo " + text + " | " + AquesTalkPi + " -b -v f" + str(num) + " -f - | aplay"
     subprocess.Popen(speak_p_cmd,shell=True)
 
-# 通知音を再生
+# 通知音を再生 ---(※4)
 def notification():
     notification_wav = str(Path("data/notificationx4.wav").resolve())
     print(notification_wav)
