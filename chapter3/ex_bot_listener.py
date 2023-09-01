@@ -8,31 +8,31 @@ ex_bot_listener.py
 import json
 from pathlib import Path
 
-from vosk import Model, KaldiRecognizer
+from vosk import Model, KaldiRecognizer  ---(※1)
 import pyaudio
 
-# Jsonファイルからウェイクワードとコマンドの配列を読み込む ---(※1)
+# Jsonファイルからウェイクワードとコマンドの配列を読み込む ---(※2)
 with open(Path("data/command_data.json"), "rb") as f:
     data = json.load(f)
 
 WAKE = data["wake"]
 EXIT = data["exit"]
 
-# Voskモデルの読み込み ---(※2)
+# Voskモデルの読み込み ---(※3)
 model = Model(str(Path("vosk-model-small-ja-0.22").resolve()))
 
 # マイクの初期化
 recognizer = KaldiRecognizer(model, 16000)
 mic = pyaudio.PyAudio()
 
-# voskの設定 ---(※3)
+# voskの設定 ---(※4)
 def engine():
     stream = mic.open(format=pyaudio.paInt16,
                        channels=1, 
                        rate=16000, 
                        input=True, 
                        frames_per_buffer=8192)
-    # ストリーミングデータを読み取り続けるループ---(※4)
+    # ストリーミングデータを読み取り続けるループ---(※5)
     while True:
         stream.start_stream()
         try:
