@@ -12,7 +12,7 @@ import time
 from pathlib import Path
 from collections import Counter
 
-# カメラのクラスを定義 ---(※2）
+# カメラのクラスを定義 ---(※2)
 class Camera():
     def __init__(self):
         self.cap = cv2.VideoCapture(0) 
@@ -30,7 +30,7 @@ class Camera():
     def release_camera(self):
         self.cap.release()
 
-def face_recognize(): # ---(※3）
+def face_recognize(): # ---(※3)
     # モデルの読み込み
     face_detector_weights = str(Path("dnn_models/yunet.onnx").resolve())
     face_detector = cv2.FaceDetectorYN_create(face_detector_weights, "", (0, 0))
@@ -41,7 +41,7 @@ def face_recognize(): # ---(※3）
 
     COSINE_THRESHOLD = 0.363
 
-    # 特徴を読み込み特徴量辞書をつくる ---(※4）
+    # 特徴を読み込み特徴量辞書をつくる ---(※4)
     dictionary = []
     files = Path("face_dataset").glob("*.npy")
     for file in files:
@@ -60,12 +60,12 @@ def face_recognize(): # ---(※3）
     
     recognized_ids =[]
     
-    cam = Camera()  # カメラオブジェクトを作成 ---(※5）
+    cam = Camera()  # カメラオブジェクトを作成 ---(※5)
 
     time_start = time.perf_counter()
     time_end = 0
 
-    while True: # ---(※6）
+    while True: # ---(※6)
         frame = cam.get_frame()  # カメラからフレームを取得
         frame = cv2.flip(frame, -1)  # カメラ画像の上下を入れ替える
 
@@ -85,7 +85,7 @@ def face_recognize(): # ---(※3）
             aligned_face = face_recognizer.alignCrop(frame, face)
             feature = face_recognizer.feature(aligned_face)
 
-            # 辞書とマッチングする ---(※7）
+            # 辞書とマッチングする ---(※7)
             result, user = match(face_recognizer, feature, dictionary)
 
             # マッチングしたらボックスとテキストの色を変える
@@ -99,7 +99,7 @@ def face_recognize(): # ---(※3）
             thickness = 1
             cv2.rectangle(frame_output, (x, y), (x + w, y + h), color, thickness, cv2.LINE_AA)
 
-            # ランドマーク(右目、左目、鼻、右口角、左口角）
+            # ランドマーク(右目、左目、鼻、右口角、左口角)
             landmarks = list(map(int, face[4:len(face)-1]))
             landmarks = np.array_split(landmarks, len(landmarks) / 2)
             for landmark in landmarks:
@@ -116,7 +116,7 @@ def face_recognize(): # ---(※3）
             thickness = 1
             cv2.putText(frame_output, text, position, font, scale, color, thickness, cv2.LINE_AA)
 
-            # マッチングしたらIDを一度だけ追加する ---(※8）
+            # マッチングしたらIDを一度だけ追加する ---(※8)
             if result:
                 recognized_ids.append(id)
 
@@ -125,7 +125,7 @@ def face_recognize(): # ---(※3）
         if frame is not None:
             cv2.imshow("face detection", frame_output)
 
-        time_end = time.perf_counter() - time_start  # ---(※9）
+        time_end = time.perf_counter() - time_start  # ---(※9)
         if time_end > 5:
             break
 
@@ -133,9 +133,9 @@ def face_recognize(): # ---(※3）
         if key == ord('q'):
             break
 
-    cam.release_camera()   # カメラを解放   ---(※10）
+    cam.release_camera()   # カメラを解放   ---(※10)
     cv2.destroyAllWindows()
-    return Counter(recognized_ids).most_common()[0][0]   # ---(※11）
+    return Counter(recognized_ids).most_common()[0][0]   # ---(※11)
 
 if __name__ == '__main__':
     recognized_id = face_recognize()
