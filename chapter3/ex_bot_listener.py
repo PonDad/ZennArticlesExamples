@@ -96,5 +96,5 @@ if __name__ == "__main__":
             robot_reply = "回答テストです"
             print("🤖 GPT: ", robot_reply)
     except KeyboardInterrupt:
-        # ctrl+c でループ終了  ---(※14)
+        # ctrl+c でループ終了  ---(※15)
         print("🖥️ SYSTEM: プログラムを終了します")
