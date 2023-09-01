@@ -8,7 +8,7 @@ ex_bot_listener.py
 import json
 from pathlib import Path
 
-from vosk import Model, KaldiRecognizer  ---(※1)
+from vosk import Model, KaldiRecognizer  # ---(※1)
 import pyaudio
 
 # Jsonファイルからウェイクワードとコマンドの配列を読み込む ---(※2)
