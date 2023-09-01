@@ -39,7 +39,7 @@ def engine():
             data = stream.read(4096)
             if recognizer.AcceptWaveform(data):
                 result = recognizer.Result()
-                # jsonに変換---(※5)
+                # jsonに変換---(※6)
                 response_json = json.loads(result) 
                 print("🖥️ SYSTEM: ", response_json)
                 response = response_json["text"].replace(" ","")
@@ -49,36 +49,36 @@ def engine():
         except OSError:
             pass
 
-# ウェイクワード待機をlistening コマンド待機をhearingと設定 ---(※6)
+# ウェイクワード待機をlistening コマンド待機をhearingと設定 ---(※7)
 listening = True
 hearing = False
 
 # listeningをループして音声認識 ウェイクワード認識でhearingループする
 def bot_listen_hear():
-    # グローバル変数 ---(※7)
+    # グローバル変数 ---(※8)
     global listening, hearing
     
     if hearing == True: print("🖥️ SYSTEM: ","-"*22, "GPTに話しかけてください","-"*22)
     else: print("🖥️ SYSTEM: ","-"*22, "ウェイクワード待機中","-"*22)
-    # listeningループ ---(※8)
+    # listeningループ ---(※9)
     while listening:
         response = engine()
         if response in WAKE:
             listening = False
             hearing = True
             print("🖥️ SYSTEM: ","-"*22, "GPTに話しかけてください","-"*22)
-        # 空白の場合はループを途中で抜ける  ---(※9)
+        # 空白の場合はループを途中で抜ける  ---(※10)
         elif response.strip() == "":
             continue
         else:
             pass
-    # hearingループ ---(※10)
+    # hearingループ ---(※11)
     while hearing:
         response = engine()
         if response in EXIT:
             listening = True
             hearing = False
-        # 空白の場合はループを途中で抜ける  ---(※11)
+        # 空白の場合はループを途中で抜ける  ---(※12)
         elif response.strip() == "":
             continue
         else:
@@ -88,11 +88,11 @@ def bot_listen_hear():
 if __name__ == "__main__":
     try:
         while True:
-            # bot_listen_hear関数を実施してレスポンスを得る  ---(※12)
+            # bot_listen_hear関数を実施してレスポンスを得る  ---(※13)
             user_input = bot_listen_hear()
             print("😀 USER: ",user_input)
 
-            # ロボットの返信を設定  ---(※13)
+            # ロボットの返信を設定  ---(※14)
             robot_reply = "回答テストです"
             print("🤖 GPT: ", robot_reply)
     except KeyboardInterrupt:
