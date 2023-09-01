@@ -6,12 +6,12 @@ bot_face_data_creator.py
 顔認証システムのトレーニングやデータ収集に使用します
 '''
 
-import cv2 # ---（※1）
+import cv2 # ---(※1)
 import numpy as np
 import json
 from pathlib import Path
 
-# カメラのクラスを定義 ---（※2）
+# カメラのクラスを定義 ---(※2)
 class Camera():
     def __init__(self):
         self.cap = cv2.VideoCapture(0) 
@@ -30,7 +30,7 @@ class Camera():
     def release_camera(self):
         self.cap.release()
 
-# jsonファイルを作成する関数 ---（※3）
+# jsonファイルを作成する関数 ---(※3)
 def save_json(id, name, image, feature, gender, age, category, interested):
     user = {id:{
         "id": id,
@@ -58,7 +58,7 @@ def save_json(id, name, image, feature, gender, age, category, interested):
         with open(Path("data/user_data.json"), 'w') as file:
             json.dump(save_user, file, ensure_ascii=False, indent=4)
 
-def face_date_create(): # ---（※4）
+def face_date_create(): # ---(※4)
     # 顔認識モデルの読み込み
     face_detector_weights = str(Path("dnn_models/yunet.onnx").resolve())
     face_detector = cv2.FaceDetectorYN_create(face_detector_weights, "", (0, 0))
@@ -97,18 +97,18 @@ def face_date_create(): # ---（※4）
     user_category = ""
     user_interested = ""
 
-    # ユーザー名、ユーザーIDの入力 ---（※5）
-    print("🖥️ SYSTEM: ユーザー名をひらがな（またはカタカナ）で入力してEterキーを押してください")
+    # ユーザー名、ユーザーIDの入力 ---(※5)
+    print("🖥️ SYSTEM: ユーザー名をひらがな(またはカタカナ)で入力してEterキーを押してください")
     user_name = input("> ")
-    print("🖥️ SYSTEM: ユーザーIDをアルファベット（正規表現）で入力してEnterキーを押してください")
+    print("🖥️ SYSTEM: ユーザーIDをアルファベット(正規表現)で入力してEnterキーを押してください")
     user_id = input("> ")
     print("🖥️ SYSTEM: 興味のあることをひとつ入力してEnterキーを押してください")
     user_interested = input("> ")
     print("🖥️ SYSTEM: 画像データを 撮影します\n撮影はSキーを押してください\n終了はQキーを押してください")
 
-    cam = Camera()  # カメラオブジェクトを作成 ---（※6）
+    cam = Camera()  # カメラオブジェクトを作成 ---(※6)
 
-    while(True): # ---（※7）
+    while(True): # ---(※7)
         frame = cam.get_frame()  # カメラからフレームを取得
         frame = cv2.flip(frame, -1)  # カメラ画像の上下を入れ替える
 
@@ -130,7 +130,7 @@ def face_date_create(): # ---（※4）
             thickness = 1
             cv2.rectangle(frame_output, (x, y), (x + w, y + h), color, thickness, cv2.LINE_AA)
 
-            # ランドマーク（右目、左目、鼻、右口角、左口角）
+            # ランドマーク(右目、左目、鼻、右口角、左口角)
             landmarks = list(map(int, face[4:len(face)-1]))
             landmarks = np.array_split(landmarks, len(landmarks) / 2)
             for landmark in landmarks:
@@ -142,7 +142,7 @@ def face_date_create(): # ---（※4）
         cv2.imshow("face data create", frame_output)
         key = cv2.waitKey(10)
 
-        # sキーでシャッターを切り、DNNモデルを使用しデータを取る ---（※8）
+        # sキーでシャッターを切り、DNNモデルを使用しデータを取る ---(※8)
         if key == ord('s'):
             # 検出された顔を切り抜く
             aligned_faces = []
@@ -191,7 +191,7 @@ def face_date_create(): # ---（※4）
                 else:
                     user_category = "woman"
 
-            # jsonファイルを保存する  ---（※9）
+            # jsonファイルを保存する  ---(※9)
             save_json(user_id, user_name, user_image, user_feature, user_gender, user_age, user_category, user_interested)
             print("🖥️ SYSTEM: ユーザーデータ\n"
                   f"ID: {user_id} \n"
@@ -208,7 +208,7 @@ def face_date_create(): # ---（※4）
             print("🖥️ SYSTEM: 撮影を終了します")
             break
 
-    cam.release_camera()  # カメラを解放   ---（※10）
+    cam.release_camera()  # カメラを解放   ---(※10)
     cv2.destroyAllWindows()
 
 if __name__ == '__main__':
