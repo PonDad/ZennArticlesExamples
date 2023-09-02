@@ -6,11 +6,11 @@ bot_object_detecter.py
 物体が見つからない場合や60秒間の処理が終了した場合は、検出結果のリストを返します
 '''
 
-import cv2 # ---（※1）
+import cv2 # ---(※1)
 import time
 from pathlib import Path
 
-# カメラのクラスを定義 ---（※2）
+# カメラのクラスを定義 ---(※2)
 class Camera():
     def __init__(self):
         self.cap = cv2.VideoCapture(0) 
@@ -26,7 +26,7 @@ class Camera():
     def release_camera(self):
         self.cap.release()
 
-def object_detection(objects=[]): # ---（※3）
+def object_detection(objects=[]): # ---(※3)
     thres = 0.45 # Threshold to detect object
     nms = 0.2
 
@@ -44,14 +44,14 @@ def object_detection(objects=[]): # ---（※3）
     net.setInputMean((127.5, 127.5, 127.5))
     net.setInputSwapRB(True)
 
-    recognized_objects = set()  # ユニークな物体を格納するため、setを使用 ---（※4）
+    recognized_objects = set()  # ユニークな物体を格納するため、setを使用 ---(※4)
 
-    cam = Camera()  # カメラオブジェクトを作成  ---（※5）
+    cam = Camera()  # カメラオブジェクトを作成  ---(※5)
 
     time_start = time.perf_counter()
     time_end = 0
 
-    while True: # ---（※6）
+    while True: # ---(※6)
         frame = cam.get_frame()  # カメラからフレームを取得
         frame = cv2.flip(frame, -1)  # カメラ画像の上下を入れ替える
 
@@ -77,12 +77,12 @@ def object_detection(objects=[]): # ---（※3）
                         cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,255),1)
                         
                         print(classNames[classId - 1])
-                        recognized_objects.add(classNames[classId - 1])  # ユニークな物体を追加 ---（※7）
+                        recognized_objects.add(classNames[classId - 1])  # ユニークな物体を追加 ---(※7)
  
         if frame is not None:
             cv2.imshow("Object Detection",frame_output)
 
-        time_end = time.perf_counter() - time_start # ---（※8）
+        time_end = time.perf_counter() - time_start # ---(※8)
 
         if time_end > 5:
             break
@@ -91,7 +91,7 @@ def object_detection(objects=[]): # ---（※3）
         if key == ord('q'):
             break
 
-    cam.release_camera()  # カメラを解放  ---（※9）
+    cam.release_camera()  # カメラを解放  ---(※9)
     cv2.destroyAllWindows()
     return set(recognized_objects)
 
