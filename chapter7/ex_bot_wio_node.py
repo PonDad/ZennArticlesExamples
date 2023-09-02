@@ -1,5 +1,5 @@
 '''
-bot_wio_node_weather.py
+bot_wio_node.py
 
 WioNode から温度と湿度のデータを取得し、不快指数を計算して返すボット用のスクリプトです
 WioNodeは日本サーバーに接続し、WioNode1およびWioNode2のAPIトークンを使用して温湿度データを取得します
@@ -8,7 +8,7 @@ WioNodeは日本サーバーに接続し、WioNode1およびWioNode2のAPIトー
 
 import os, requests, json, math, dotenv # ---(※1)
 
-# .envファイルからAPI Tpkenをロード ---(※2)
+# .envファイルからAPI Tokenをロード ---(※2)
 dotenv.load_dotenv()
 wio_access_token_1 = os.getenv("wio_access_token_1")
 wio_access_token_2 = os.getenv("wio_access_token_2")
@@ -53,5 +53,5 @@ def get_wio(): # ---(※7)
     return temprature, humidity, discomfort, lux, moisture
 
 if __name__ == "__main__":
-    wio =get_wio()
-    print(wio)
+    room_data =get_wio()
+    print(room_data)
