@@ -93,7 +93,7 @@ def object_detection(objects=[]): # ---(※3)
 
     cam.release_camera()  # カメラを解放  ---(※9)
     cv2.destroyAllWindows()
-    return set(recognized_objects)
+    return set(recognized_objects) # ---(※10)
 
 if __name__ == '__main__':
     recognized_obj = object_detection()
